@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="res_partner_view_form" model="ir.ui.view">
+            <field name="name">res.partner.view.form.openacademy</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="instructor"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Attended Session">
+                        <field name="session_ids"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

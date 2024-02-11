@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="product_template_only_form_view" model="ir.ui.view">
+            <field name="name">product.template.product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="before">
+                    <field name="processor"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="product_template_tree_view" model="ir.ui.view">
+            <field name="name">product.template.product.tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="processor" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="product_template_search_view" model="ir.ui.view">
+            <field name="name">product.template.search</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="processor" string="processor" filter_domain="[('processor', 'ilike', self)]"/>
+                </xpath>
+                <xpath expr="//filter[@name='consumable']" position="after">
+                    <filter name="processor" string="Processor Not Set" domain="[('processor', '=', False)]"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="product_template_service_action" model="ir.actions.act_window">
+            <field name="name">Service Products</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="domain">[('detailed_type', '=', 'service')]</field>
+            <field name="view_id" ref="product.product_template_kanban_view"/>
+            <field name="search_view_id" ref="product.product_template_search_view"/>
+            <field name="context">{"search_default_filter_to_sell":1, "sale_multi_pricelist_product_template": 1, 'default_detailed_type':'service'}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new product
+                </p>
+                <p>
+                    You must define a product for everything you sell or purchase,
+                    whether it's a storable product, a consumable or a service.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_product_template_service"
+                  action="product_template_service_action"
+                  parent="sale.product_menu_catalog"
+                  sequence="11"/>
+        <record id="sale.product_template_action" model="ir.actions.act_window">
+            <field name="name">Products(Service and Consumable)</field>
+            <field name="limit">90</field>
+
+        </record>
+    </data>
+</odoo>
